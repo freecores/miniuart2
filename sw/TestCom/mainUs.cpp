@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
    if (argc == 1)
    {
       printf("RS232 serial line tester\n");
-      printf("By Philippe Carton the 8/01/2002 (pc@microsystemes.com)\n");
+      printf("By Philippe Carton the 8/01/2002 (philippe.carton2@libertysurf.fr)\n");
       printf("This program give a way to test the reliability of a closed-loop serial line\n");
       printf("It emit a continuous random byte stream, and check that it receive exacly what\n");
       printf("has been sent. The serial line, or the connected equipment must work in CLOSED-\n");

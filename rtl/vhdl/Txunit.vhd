@@ -4,8 +4,8 @@
 -------------------------------------------------------------------------------
 -- File        : Txunit.vhd
 -- Author      : Philippe CARTON 
---               (pc@microsystemes.com / philippe.carton2@libertysurf.fr)
--- Organization: Microsystemes
+--               (philippe.carton2@libertysurf.fr)
+-- Organization:
 -- Created     : 15/12/2001
 -- Last update : 6/05/2002
 -- Platform    : Foundation 3.1i

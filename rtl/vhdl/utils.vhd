@@ -4,8 +4,8 @@
 -------------------------------------------------------------------------------
 -- File        : utils.vhd
 -- Author      : Philippe CARTON 
---               (pc@microsystemes.com / philippe.carton2@libertysurf.fr)
--- Organization: Microsystemes
+--               (philippe.carton2@libertysurf.fr)
+-- Organization:
 -- Created     : 15/12/2001
 -- Last update : 28/12/2001
 -- Platform    : Foundation 3.1i
@@ -35,7 +35,7 @@
 -- Version   Author                 Date                        Changes
 --
 -- 1.0      Philippe CARTON  19 December 2001                   New model
---	    pc@microsystemes.com
+--	    philippe.carton2@libertysurf.fr
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------- 
