@@ -82,10 +82,15 @@ begin
                     RReg(BitPos-2) <= RxD; -- Deserialisation
                  end if;
                  if SampleCnt = 3 then -- Increment BitPos on 3
-                    BitPos := BitPos + 1;                    
+                    BitPos := BitPos + 1;
                  end if;
-           end case;   
-           sampleCnt := SampleCnt + 1;   
+           end case;
+           if SampleCnt = 3 then -- Optionaly (SampleCnt can be free running)
+              SampleCnt := 0;
+           else   
+              sampleCnt := SampleCnt + 1;
+           end if;
+           
         end if;
      end if;
   end process;
