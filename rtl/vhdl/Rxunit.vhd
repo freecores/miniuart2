@@ -7,10 +7,10 @@
 --               (philippe.carton2@libertysurf.fr)
 -- Organization:
 -- Created     : 15/12/2001
--- Last update : 28/12/2001
+-- Last update : 8/1/2003
 -- Platform    : Foundation 3.1i
--- Simulators  : Foundation logic simulator
--- Synthesizers: Foundation Synopsys
+-- Simulators  : ModelSim 5.5b
+-- Synthesizers: Xilinx Synthesis
 -- Targets     : Xilinx Spartan
 -- Dependency  : IEEE std_logic_1164
 -------------------------------------------------------------------------------
@@ -33,18 +33,18 @@ library ieee;
    
 entity RxUnit is
   port (
-     Clk    : in  Std_Logic;  -- system clock signal
-     Reset  : in  Std_Logic;  -- Reset input
-     Enable : in  Std_Logic;  -- Enable input
+     Clk    : in  std_logic;  -- system clock signal
+     Reset  : in  std_logic;  -- Reset input
+     Enable : in  std_logic;  -- Enable input
      ReadA  : in  Std_logic;  -- Async Read Received Byte
-     RxD    : in  Std_Logic;  -- RS-232 data input
-     RxAv   : out Std_Logic;  -- Byte available
-     DataO  : out Std_Logic_Vector(7 downto 0)); -- Byte received
-end entity;
+     RxD    : in  std_logic;  -- RS-232 data input
+     RxAv   : out std_logic;  -- Byte available
+     DataO  : out std_logic_vector(7 downto 0)); -- Byte received
+end RxUnit;
 
 architecture Behaviour of RxUnit is
-  signal RReg    : Std_Logic_Vector(7 downto 0); -- receive register  
-  signal RRegL   : Std_Logic;                    -- Byte received
+  signal RReg    : std_logic_vector(7 downto 0); -- receive register  
+  signal RRegL   : std_logic;                    -- Byte received
 begin
   -- RxAv process
   RxAvProc : process(RRegL,Reset,ReadA)
@@ -63,7 +63,7 @@ begin
   begin
      if Reset = '1' then -- Reset
         RRegL <= '0';
-        BitPos := 0;           
+        BitPos := 0;
      elsif Rising_Edge(Clk) then
         if Enable = '1' then
            case BitPos is
@@ -78,16 +78,16 @@ begin
                  RRegL <= '1';   -- Indicate byte received
                  DataO <= RReg;  -- Store received byte
               when others =>
-                 if SampleCnt = 1 then -- Sample RxD on 1
+                 if (SampleCnt = 1 and BitPos >= 2) then -- Sample RxD on 1
                     RReg(BitPos-2) <= RxD; -- Deserialisation
                  end if;
                  if SampleCnt = 3 then -- Increment BitPos on 3
                     BitPos := BitPos + 1;
                  end if;
            end case;
-           if SampleCnt = 3 then -- Optionaly (SampleCnt can be free running)
+           if SampleCnt = 3 then
               SampleCnt := 0;
-           else   
+           else
               sampleCnt := SampleCnt + 1;
            end if;
            
