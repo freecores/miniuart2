@@ -7,7 +7,7 @@
 --               (pc@microsystemes.com / philippe.carton2@libertysurf.fr)
 -- Organization: Microsystemes
 -- Created     : 15/12/2001
--- Last update : 28/12/2001
+-- Last update : 6/05/2002
 -- Platform    : Foundation 3.1i
 -- Simulators  : Foundation logic simulator
 -- Synthesizers: Foundation Synopsys
@@ -69,6 +69,7 @@ begin
      if Reset = '1' then
         TBufL <= '0';
         BitPos := 0;
+        TxD <= '1';        
      elsif Rising_Edge(Clk) then        
         if LoadS = '1' then
            TBuff <= DataI;
