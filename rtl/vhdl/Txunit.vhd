@@ -44,44 +44,33 @@ entity TxUnit is
 end entity;
 
 architecture Behaviour of TxUnit is
+
+  component synchroniser is
+  port (
+     C1 : in Std_Logic;	 -- Asynchronous signal
+     C :  in Std_Logic;	 -- Clock
+     O :  out Std_logic);-- Synchronised signal
+  end component;
+  
   signal TBuff    : Std_Logic_Vector(7 downto 0); -- transmit buffer
   signal TReg     : Std_Logic_Vector(7 downto 0); -- transmit register
   signal TBufL    : Std_Logic;  -- Buffer loaded
-  signal Load     : Std_Logic;  -- Load signal, Clk synchronised
-  signal LoadAS   : Std_Logic;	-- Load signal Async started, Sync stopped
+  signal LoadS    : Std_Logic;	-- Synchronised load signal
 
 begin
-  process(LoadA, Load)
-  begin
-     if load = '1' then
-        loadAS <= '0';  -- Clear LoadAS
-     elsif Rising_Edge(LoadA) then
-        LoadAS <= '1';
-     end if;
-  end process;
-  -- Synchronize Load on Clk
-  SyncLoad : process(Clk, LoadAS)
-  begin
-     if Rising_Edge(Clk) then
-        if LoadAS = '1' then
-           Load <= '1';
-        end if;
-        if Load = '1' then
-           Load <= '0';
-        end if;
-     end if;
-  end process;
-  Busy <= LoadAS or TBufL;
+  -- Synchronise Load on Clk
+  SyncLoad : Synchroniser port map (LoadA, Clk, LoadS);
+  Busy <= LoadS or TBufL;
 
   -- Tx process
-  TxProc : process(Clk, Reset, Enable, Load, DataI, TBuff, TReg, TBufL)
+  TxProc : process(Clk, Reset, Enable, DataI, TBuff, TReg, TBufL)
   variable BitPos : INTEGER range 0 to 10; -- Bit position in the frame
   begin
      if Reset = '1' then
         TBufL <= '0';
         BitPos := 0;
      elsif Rising_Edge(Clk) then        
-        if LoadAS = '1' then
+        if LoadS = '1' then
            TBuff <= DataI;
            TBufL <= '1';
         end if;
