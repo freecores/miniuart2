@@ -7,10 +7,10 @@
 --               (philippe.carton2@libertysurf.fr)
 -- Organization:
 -- Created     : 15/12/2001
--- Last update : 28/12/2001
+-- Last update : 8/1/2003
 -- Platform    : Foundation 3.1i
--- Simulators  : Foundation logic simulator
--- Synthesizers: Foundation Synopsys
+-- Simulators  : ModelSim 5.5b
+-- Synthesizers: Xilinx Synthesis
 -- Targets     : Xilinx Spartan
 -- Dependency  : IEEE std_logic_1164
 -------------------------------------------------------------------------------
@@ -45,19 +45,19 @@
 --    one C clock period.
 -------------------------------------------------------------------------------- 
 library IEEE,STD;
-use IEEE.Std_Logic_1164.all;
+use IEEE.std_logic_1164.all;
 
 entity synchroniser is
    port (
-      C1 : in Std_Logic;	-- Asynchronous signal
-      C :  in Std_Logic;	-- Clock
-      O :  out Std_logic);	-- Synchronised signal
-end entity;
+      C1 : in std_logic;-- Asynchronous signal
+      C :  in std_logic;-- Clock
+      O :  out std_logic);-- Synchronised signal
+end synchroniser;
 
 architecture Behaviour of synchroniser is
-   signal C1A : Std_Logic;  
-   signal C1S : Std_Logic;  
-   signal R : Std_Logic;  
+   signal C1A : std_logic;
+   signal C1S : std_logic;
+   signal R : std_logic;
 begin
    RiseC1A : process(C1,R)
    begin
@@ -66,12 +66,12 @@ begin
       end if;
       if (R = '1') then
          C1A <= '0';
-      end if;         
+      end if;
    end process;
 
    SyncP : process(C,R)
    begin
-      if Rising_Edge(C) then   
+      if Rising_Edge(C) then
          if (C1A = '1') then
             C1S <= '1';
          else C1S <= '0';
@@ -83,7 +83,7 @@ begin
       end if;
       if (R = '1') then
          C1S <= '0';
-      end if;         
+      end if;
    end process;
    O <= C1S;
 end Behaviour;
@@ -97,16 +97,16 @@ end Behaviour;
 --    It can be reseted to 0. 
 -------------------------------------------------------------------------------
 library IEEE,STD;
-use IEEE.Std_Logic_1164.all;
+use IEEE.std_logic_1164.all;
 
 entity Counter is
   generic(Count: INTEGER range 0 to 65535); -- Count revolution
   port (
-     Clk      : in  Std_Logic;  -- Clock
-     Reset    : in  Std_Logic;  -- Reset input
-     CE       : in  Std_Logic;  -- Chip Enable
-     O        : out Std_Logic); -- Output
-end entity;
+     Clk      : in  std_logic;  -- Clock
+     Reset    : in  std_logic;  -- Reset input
+     CE       : in  std_logic;  -- Chip Enable
+     O        : out std_logic); -- Output
+end Counter;
 
 architecture Behaviour of Counter is
 begin
@@ -115,7 +115,7 @@ begin
   begin
      if Reset = '1' then
         Cnt := Count - 1;
-        O <= '0';  
+        O <= '0';
      elsif Rising_Edge(Clk) then
         if CE = '1' then
            if Cnt = 0 then
